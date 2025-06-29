@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>V20 Stock Signals</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+      body { font-family: sans-serif; margin: 20px; }
+      table.dataTable { width:100% !important; }
+  </style>
+</head>
+<body>
+  <h1 class="mb-4">📈 V20 Signals (Live)</h1>
+  <table id="v20" class="table table-bordered table-striped display nowrap">
+      <thead>
+          <tr>
+              <th>Date</th>
+              <th>Stock</th>
+              <th>Buy At</th>
+              <th>Sell At</th>
+              <th>% Move</th>
+              <th>Close</th>
+              <th>Proximity %</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for s in stocks %}
+          <tr>
+              <td>{{ s.SignalDate }}</td>
+              <td>{{ s.Symbol }}</td>
+              <td>{{ s.BuyAt }}</td>
+              <td>{{ s.SellAt }}</td>
+              <td>{{ s['%Move'] }}</td>
+              <td>{{ s.Close }}</td>
+              <td>{{ s['Proximity%'] }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script>
+ $(document).ready(function(){
+    const table = $('#v20').DataTable({pageLength:25});
+    $('#v20 tbody tr').each(function(){
+        const prox = parseFloat($(this).find('td:eq(6)').text());
+        if (prox < 2)      $(this).css('background','#d4edda');
+        else if (prox < 5) $(this).css('background','#fff3cd');
+        else               $(this).css('background','#f8d7da');
+    });
+ });
+</script>
+</body>
+</html>
